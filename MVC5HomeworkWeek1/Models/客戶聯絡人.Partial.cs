@@ -20,12 +20,13 @@ namespace MVC5HomeworkWeek1.Models
         [Required]
         public string 職稱 { get; set; }
         
-        [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]
+        [StringLength(10, ErrorMessage="欄位長度不得大於 10 個字元")]
         [Required]
         public string 姓名 { get; set; }
         
         [StringLength(250, ErrorMessage="欄位長度不得大於 250 個字元")]
         [Required]
+		[EmailAddress]
         public string Email { get; set; }
         
         [StringLength(50, ErrorMessage="欄位長度不得大於 50 個字元")]

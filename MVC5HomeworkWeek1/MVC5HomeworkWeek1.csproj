@@ -131,6 +131,7 @@
     <Compile Include="Controllers\客戶資料Controller.cs" />
     <Compile Include="Controllers\客戶銀行資訊Controller.cs" />
     <Compile Include="Controllers\清單Controller.cs" />
+    <Compile Include="DatatypeAttributes\EmailAddressAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
