@@ -24,7 +24,7 @@ namespace MVC5HomeworkWeek1.Models
 
 		public override IQueryable<客戶聯絡人> Include<TProperty>(Expression<Func<客戶聯絡人, TProperty>> path)
 		{
-			return Include(path).Where(n => 1 == 1);
+			return base.Include(path).Where(n => !n.是否已刪除);
 		}
 
 		public override void Delete(客戶聯絡人 entity)

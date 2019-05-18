@@ -24,7 +24,7 @@ namespace MVC5HomeworkWeek1.Models
 
 		public override IQueryable<客戶銀行資訊> Include<TProperty>(Expression<Func<客戶銀行資訊, TProperty>> path)
 		{
-			return Include(path).Where(n => 1 == 1);
+			return base.Include(path).Where(n => !n.是否已刪除);
 		}
 
 		public override void Delete(客戶銀行資訊 entity)
