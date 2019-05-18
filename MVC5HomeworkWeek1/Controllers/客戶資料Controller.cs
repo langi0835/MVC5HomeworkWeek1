@@ -13,22 +13,22 @@ namespace MVC5HomeworkWeek1.Controllers
     public class 客戶資料Controller : Controller
     {
 		readonly 客戶資料Repository repo;
-
+		private List<KeyValuePair<string, bool>> orderByKeyValue;
 		public 客戶資料Controller()
 		{
 			repo = RepositoryHelper.Get客戶資料Repository();
+			orderByKeyValue = repo.GetColumnNames(new 客戶資料());
 		}
 
         // GET: 客戶資料
         public ActionResult Index(string searchString)
         {
-			if (!string.IsNullOrEmpty(searchString))
-			{
-				var costomers = repo.Where(n => n.客戶名稱.Contains(searchString)).ToList();
-				return View(costomers);
-			}
+			List<客戶資料> customers;
+			customers = repo.GetCustomers(searchString).ToList();
+			
+			//customers = customers.OrderBy(n => sortOrder).ToList();
 
-            return View(repo.All().ToList());
+			return View(customers);
         }
 
 

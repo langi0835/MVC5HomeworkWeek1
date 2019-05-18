@@ -86,5 +86,11 @@ namespace MVC5HomeworkWeek1.Models
 			ObjectSet.Remove(entity);
 		}
 
+		public List<KeyValuePair<string, bool>> GetColumnNames(T data)
+		{
+			var dataType = data.GetType();
+			return dataType.GetProperties().Select(n => new KeyValuePair<string, bool>(n.Name, true)).ToList();
+		}
+
 	}
 }

@@ -7,6 +7,14 @@ namespace MVC5HomeworkWeek1.Models
 {   
 	public  class 客戶資料Repository : EFRepository<客戶資料>, I客戶資料Repository
 	{
+		public IQueryable<客戶資料> GetCustomers(string searchString)
+		{
+			if (!string.IsNullOrEmpty(searchString))
+				return Where(n => n.客戶名稱.Contains(searchString));
+			else
+				return All();
+		}
+
 		public 客戶資料 Find(int? id)
 		{
 			return Where(n => n.Id == id.Value).FirstOrDefault();

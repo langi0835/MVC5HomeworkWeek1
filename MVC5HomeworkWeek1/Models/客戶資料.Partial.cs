@@ -39,6 +39,9 @@ namespace MVC5HomeworkWeek1.Models
 		[Required]
 		public bool 是否已刪除 { get; set; }
 
+		[Range(1,5)]
+		public int 客戶分類 { get; set; }
+
 		public virtual ICollection<客戶銀行資訊> 客戶銀行資訊 { get; set; }
         public virtual ICollection<客戶聯絡人> 客戶聯絡人 { get; set; }
     }
