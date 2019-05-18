@@ -7,14 +7,12 @@ using System.Web;
 
 namespace MVC5HomeworkWeek1.DatatypeAttributes
 {
-
-	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-	public class EmailAddressAttribute : DataTypeAttribute
+	public class PhoneFormatAttribute : DataTypeAttribute
 	{
-		private static Regex _regex = new Regex("PATTERN", RegexOptions.IgnoreCase);
-		public EmailAddressAttribute() : base(DataType.EmailAddress)
+		private static Regex _regex = new Regex(@"\d{4}-\d{6}", RegexOptions.IgnoreCase);
+		public PhoneFormatAttribute() : base(DataType.Text)
 		{
-			ErrorMessage = "Email格式錯誤";
+			ErrorMessage = "電話號碼格式錯誤";
 		}
 
 		public override bool IsValid(object value)
