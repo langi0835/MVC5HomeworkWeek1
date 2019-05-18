@@ -13,8 +13,13 @@
 {
 	<p>
 		搜尋客戶名稱：@Html.TextBox("SearchString")<input type="submit" value="Search" />
+
+		<div>
+			@Html.ActionLink("Export", "Export")
+		</div>
 	</p>
 }
+
 <table class="table">
 	<tr>
 		<th>

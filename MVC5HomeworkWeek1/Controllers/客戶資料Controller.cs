@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ClosedXML.Excel;
 using MVC5HomeworkWeek1.Models;
 
 namespace MVC5HomeworkWeek1.Controllers
@@ -13,11 +15,9 @@ namespace MVC5HomeworkWeek1.Controllers
     public class 客戶資料Controller : Controller
     {
 		readonly 客戶資料Repository repo;
-		private List<KeyValuePair<string, bool>> orderByKeyValue;
 		public 客戶資料Controller()
 		{
 			repo = RepositoryHelper.Get客戶資料Repository();
-			orderByKeyValue = repo.GetColumnNames(new 客戶資料());
 		}
 
         // GET: 客戶資料
@@ -26,8 +26,6 @@ namespace MVC5HomeworkWeek1.Controllers
 			List<客戶資料> customers;
 			customers = repo.GetCustomers(searchString).ToList();
 			
-			//customers = customers.OrderBy(n => sortOrder).ToList();
-
 			return View(customers);
         }
 
@@ -138,5 +136,23 @@ namespace MVC5HomeworkWeek1.Controllers
             }
             base.Dispose(disposing);
         }
+
+		public ActionResult Export()
+		{
+			using (XLWorkbook wb = new XLWorkbook())
+			{
+				var data = repo.All().Select(c => new { c.客戶名稱, c.電話, c.地址 });
+
+				var ws = wb.Worksheets.Add("custdata", 1);
+				ws.Cell(1, 1).InsertData(data);
+
+				using (MemoryStream memoryStream = new MemoryStream())
+				{
+					wb.SaveAs(memoryStream);
+					memoryStream.Seek(0, SeekOrigin.Begin);
+					return File(memoryStream.ToArray(), "application/vnd.ms-excel", "customers.xlsx");
+				}
+			}
+		}
     }
 }

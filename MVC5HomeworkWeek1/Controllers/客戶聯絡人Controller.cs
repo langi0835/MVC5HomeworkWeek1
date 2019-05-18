@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ClosedXML.Excel;
 using MVC5HomeworkWeek1.Models;
 
 namespace MVC5HomeworkWeek1.Controllers
@@ -143,5 +145,23 @@ namespace MVC5HomeworkWeek1.Controllers
             }
             base.Dispose(disposing);
         }
-    }
+
+		public ActionResult Export()
+		{
+			using (XLWorkbook wb = new XLWorkbook())
+			{
+				var data = repo.All().Select(c => new { c.姓名, c.職稱, c.電話, c.手機 });
+
+				var ws = wb.Worksheets.Add("custdata", 1);
+				ws.Cell(1, 1).InsertData(data);
+
+				using (MemoryStream memoryStream = new MemoryStream())
+				{
+					wb.SaveAs(memoryStream);
+					memoryStream.Seek(0, SeekOrigin.Begin);
+					return File(memoryStream.ToArray(), "application/vnd.ms-excel", "contact.xlsx");
+				}
+			}
+		}
+	}
 }
