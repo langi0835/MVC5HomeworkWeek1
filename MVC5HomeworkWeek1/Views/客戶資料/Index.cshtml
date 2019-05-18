@@ -9,15 +9,15 @@
 <p>
 	@Html.ActionLink("Create New", "Create")
 </p>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Index","客戶資料",FormMethod.Get))
 {
-	<p>
-		搜尋客戶名稱：@Html.TextBox("SearchString")<input type="submit" value="Search" />
+<p>
 
-		<div>
-			@Html.ActionLink("Export", "Export")
-		</div>
-	</p>
+	<input type="search" name="searchString" placeholder="請輸入客戶名稱" value="" />
+	<div>
+		@Html.ActionLink("Export", "Export")
+	</div>
+</p>
 }
 
 <table class="table">
