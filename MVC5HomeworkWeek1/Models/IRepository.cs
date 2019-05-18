@@ -13,6 +13,7 @@ namespace MVC5HomeworkWeek1.Models
 		IUnitOfWork UnitOfWork { get; set; }
 		IQueryable<T> All();
 		IQueryable<T> Where(Expression<Func<T, bool>> expression);
+		IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path);
 		void Add(T entity);
 		void Delete(T entity);
 	}

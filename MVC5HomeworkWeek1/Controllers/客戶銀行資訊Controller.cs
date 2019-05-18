@@ -95,16 +95,16 @@ namespace MVC5HomeworkWeek1.Controllers
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 客戶銀行資訊)
+        public ActionResult Edit([Bind(Include = "Id,客戶Id,銀行名稱,銀行代碼,分行代碼,帳戶名稱,帳戶號碼")] 客戶銀行資訊 banksData)
         {
             if (ModelState.IsValid)
             {
-                repo.UnitOfWork.Context.Entry(客戶銀行資訊).State = EntityState.Modified;
+				repo.Update(banksData);
 				repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(repoCustomer.All(), "Id", "客戶名稱", 客戶銀行資訊.客戶Id);
-            return View(客戶銀行資訊);
+            ViewBag.客戶Id = new SelectList(repoCustomer.All(), "Id", "客戶名稱", banksData.客戶Id);
+            return View(banksData);
         }
 
         // GET: 客戶銀行資訊/Delete/5

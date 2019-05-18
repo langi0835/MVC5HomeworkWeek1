@@ -14,6 +14,12 @@ namespace MVC5HomeworkWeek1.Models
 		public void Commit()
 		{
 			Context.SaveChanges();
+
+			// Update可能修改到，要復原
+			if (Context.Configuration.ValidateOnSaveEnabled == false)
+			{
+				Context.Configuration.ValidateOnSaveEnabled = true;
+			}
 		}
 		
 		public bool LazyLoadingEnabled

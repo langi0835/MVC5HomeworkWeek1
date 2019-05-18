@@ -31,12 +31,17 @@ namespace MVC5HomeworkWeek1.Models
 			return ObjectSet.AsQueryable();
 		}
 
-		public IQueryable<T> Where(Expression<Func<T, bool>> expression)
+		public virtual T First(Expression<Func<T, bool>> expression)
 		{
-			return ObjectSet.Where(expression);
+			return ObjectSet.Where(expression).FirstOrDefault();
 		}
 
-		public IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path)
+		public virtual IQueryable<T> Where(Expression<Func<T, bool>> expression)
+		{			
+			return ObjectSet.Where(expression);
+		}		
+
+		public virtual IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path)
 		{
 			return ObjectSet.Include(path);
 		}
@@ -46,6 +51,35 @@ namespace MVC5HomeworkWeek1.Models
 		{
 			ObjectSet.Add(entity);
 		}
+
+		/// <summary>
+		/// 更新一筆Entity內容。
+		/// </summary>
+		/// <param name="entity">要更新的內容</param>
+		public void Update(T entity)
+		{
+			UnitOfWork.Context.Entry(entity).State = EntityState.Modified;
+		}
+
+		/// <summary>
+		/// 更新一筆資料
+		/// </summary>
+		/// <param name="entity">更新的內容</param>
+		/// <param name="updateProperties">更新的欄位</param>
+		//public void Update(T entity, Expression<Func<T, object>>[] updateProperties)
+		//{
+		//	UnitOfWork.Context.Configuration.ValidateOnSaveEnabled = false;
+
+		//	UnitOfWork.Context.Entry(entity).State = EntityState.Unchanged;
+
+		//	if (updateProperties != null)
+		//	{
+		//		foreach (var property in updateProperties)
+		//		{
+		//			UnitOfWork.Context.Entry(entity).Property(property).IsModified = true;
+		//		}
+		//	}
+		//}
 
 		public virtual void Delete(T entity)
 		{

@@ -96,8 +96,9 @@ namespace MVC5HomeworkWeek1.Controllers
         {
             if (ModelState.IsValid)
             {
-				repo.UnitOfWork.Context.Entry(客戶資料).State = EntityState.Modified;
+				repo.Update(客戶資料);
 				repo.UnitOfWork.Commit();
+
 				return RedirectToAction("Index");
             }
             return View(客戶資料);
