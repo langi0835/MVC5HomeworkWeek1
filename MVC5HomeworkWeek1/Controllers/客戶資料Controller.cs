@@ -20,8 +20,14 @@ namespace MVC5HomeworkWeek1.Controllers
 		}
 
         // GET: 客戶資料
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				var costomers = repo.Where(n => n.客戶名稱.Contains(searchString)).ToList();
+				return View(costomers);
+			}
+
             return View(repo.All().ToList());
         }
 
@@ -33,11 +39,13 @@ namespace MVC5HomeworkWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = repo.Find(id);
+
+            var 客戶資料 = repo.Find(id);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
             }
+
             return View(客戶資料);
         }
 

@@ -10,6 +10,7 @@ namespace MVC5HomeworkWeek1.Models
 		{
 			return Where(n => n.Id == id.Value).FirstOrDefault();
 		}
+
 	}
 
 	public  interface I客戶聯絡人Repository : IRepository<客戶聯絡人>

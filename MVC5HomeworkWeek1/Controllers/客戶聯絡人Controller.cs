@@ -12,13 +12,25 @@ namespace MVC5HomeworkWeek1.Controllers
 {
     public class 客戶聯絡人Controller : Controller
     {
-        private 客戶資料Entities db = new 客戶資料Entities();
+		readonly 客戶聯絡人Repository repo;
+		readonly 客戶資料Repository repoCustomer;
 
-        // GET: 客戶聯絡人
-        public ActionResult Index()
+		public 客戶聯絡人Controller()
+		{
+			repo = RepositoryHelper.Get客戶聯絡人Repository();
+			repoCustomer = RepositoryHelper.Get客戶資料Repository(repo.UnitOfWork);
+		}
+
+		// GET: 客戶聯絡人
+		public ActionResult Index(string searchString)
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
-            return View(客戶聯絡人.ToList());
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				return View(repo.Where(n => n.姓名.Contains(searchString)).Include(n => n.客戶資料).ToList());
+			}
+
+			var contacts = repo.Include(n => n.客戶資料).ToList();
+            return View(contacts);
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -28,18 +40,20 @@ namespace MVC5HomeworkWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+
+            var 客戶聯絡人 = repo.Find(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
             }
+
             return View(客戶聯絡人);
         }
 
         // GET: 客戶聯絡人/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(repoCustomer.All(), "Id", "客戶名稱");
             return View();
         }
 
@@ -52,12 +66,12 @@ namespace MVC5HomeworkWeek1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
+                repo.Add(客戶聯絡人);
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repoCustomer.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -68,12 +82,13 @@ namespace MVC5HomeworkWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+
+            var 客戶聯絡人 = repo.Find(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repoCustomer.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -86,11 +101,11 @@ namespace MVC5HomeworkWeek1.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶聯絡人).State = EntityState.Modified;
-                db.SaveChanges();
+                repo.UnitOfWork.Context.Entry(客戶聯絡人).State = EntityState.Modified;
+				repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repoCustomer.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -101,7 +116,7 @@ namespace MVC5HomeworkWeek1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo.Find(id);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -114,9 +129,9 @@ namespace MVC5HomeworkWeek1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            db.客戶聯絡人.Remove(客戶聯絡人);
-            db.SaveChanges();
+            客戶聯絡人 客戶聯絡人 = repo.Find(id);
+			repo.Delete(客戶聯絡人);
+			repo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -124,7 +139,7 @@ namespace MVC5HomeworkWeek1.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+				repo.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }

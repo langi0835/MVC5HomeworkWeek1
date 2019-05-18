@@ -1,15 +1,19 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace MVC5HomeworkWeek1.Models
 {
-	public class EFRepository<T> : IRepository<T> where T : class
+	public class EFRepository<T> : IRepository<T>
+		where T : class
 	{
 		public IUnitOfWork UnitOfWork { get; set; }
 		
 		private IDbSet<T> _objectset;
+
 		private IDbSet<T> ObjectSet
 		{
 			get
@@ -31,6 +35,12 @@ namespace MVC5HomeworkWeek1.Models
 		{
 			return ObjectSet.Where(expression);
 		}
+
+		public IQueryable<T> Include<TProperty>(Expression<Func<T, TProperty>> path)
+		{
+			return ObjectSet.Include(path);
+		}
+
 
 		public virtual void Add(T entity)
 		{
