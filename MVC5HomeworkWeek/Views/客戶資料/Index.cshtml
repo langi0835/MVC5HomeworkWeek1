@@ -13,7 +13,7 @@
 {
 <p>
 
-	<input type="search" name="searchString" placeholder="請輸入客戶名稱" value="" />
+	請輸入客戶名稱：@Html.TextBox("SearchString")<input type="submit" value="Search" />
 	<div>
 		@Html.ActionLink("Export", "Export")
 	</div>
@@ -23,10 +23,7 @@
 <table class="table">
 	<tr>
 		<th>
-			@Html.ActionLink("客戶名稱", "Index")
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.客戶名稱)
+			@Html.ActionLink("客戶名稱", "Index", new { sortKey = ViewBag.NameSortParm, isDesc = ViewBag.SortIsDesc })
 		</th>
 		<th>
 			@Html.DisplayNameFor(model => model.統一編號)

@@ -24,15 +24,11 @@ namespace MVC5HomeworkWeek.Controllers
 		}
 
 		// GET: 客戶聯絡人
-		public ActionResult Index(string searchString)
+		public ActionResult Index(string searchString, string key = "Id", bool isDesc = false)
         {
-			if (!string.IsNullOrEmpty(searchString))
-			{
-				return View(repo.Where(n => n.姓名.Contains(searchString)).Include(n => n.客戶資料).ToList());
-			}
-
-			var contacts = repo.Include(n => n.客戶資料).ToList();
-            return View(contacts);
+			var contacts = repo.GetContacts(searchString);
+			
+            return View(repo.OrderBy(contacts, key, isDesc).ToList());
         }
 
         // GET: 客戶聯絡人/Details/5

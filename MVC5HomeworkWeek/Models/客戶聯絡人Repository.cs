@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Data.Entity;
 
 namespace MVC5HomeworkWeek.Models
 {   
@@ -25,6 +26,16 @@ namespace MVC5HomeworkWeek.Models
 		public override IQueryable<客戶聯絡人> Include<TProperty>(Expression<Func<客戶聯絡人, TProperty>> path)
 		{
 			return base.Include(path).Where(n => !n.是否已刪除);
+		}
+
+		public IQueryable<客戶聯絡人> GetContacts(string searchString)
+		{
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				return Where(n => n.姓名.Contains(searchString)).Include(n => n.客戶資料);
+			}
+
+			return Include(n => n.客戶資料);
 		}
 
 		public override void Delete(客戶聯絡人 entity)

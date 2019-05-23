@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Linq.Dynamic;
 
 namespace MVC5HomeworkWeek.Models
 {
@@ -91,5 +92,14 @@ namespace MVC5HomeworkWeek.Models
 			return dataType.GetProperties().Select(n => new KeyValuePair<string, bool>(n.Name, true)).ToList();
 		}
 
+		public virtual IQueryable<T> OrderBy(IQueryable<T> obj, string sortKey, bool isDesc = false)
+		{
+			return obj.OrderBy(sortKey + (isDesc ? " descending" : ""));
+		}
+
+		public virtual IQueryable<T> OrderByDescending(IQueryable<T> obj, string sortKey)
+		{
+			return obj.OrderBy(sortKey + " descending");
+		}
 	}
 }
