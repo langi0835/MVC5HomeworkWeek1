@@ -13,6 +13,7 @@ using MVC5HomeworkWeek.Models;
 
 namespace MVC5HomeworkWeek.Controllers
 {
+	[HandleError(View = "NullReferenceError", ExceptionType = typeof(NullReferenceException))]
 	public class 客戶資料Controller : Controller
 	{
 		readonly 客戶資料Repository repo;

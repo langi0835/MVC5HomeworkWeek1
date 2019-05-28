@@ -321,6 +321,7 @@
     <Content Include="Views\客戶聯絡人\List.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\客戶資料.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\客戶資料.cshtml" />
+    <Content Include="Views\Shared\NullReferenceError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
