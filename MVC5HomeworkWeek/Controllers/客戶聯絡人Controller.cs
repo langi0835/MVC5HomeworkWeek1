@@ -23,6 +23,12 @@ namespace MVC5HomeworkWeek.Controllers
 			repoCustomer = RepositoryHelper.Get客戶資料Repository(repo.UnitOfWork);
 		}
 
+		public ActionResult List(int 客戶Id)
+		{
+			var contacts = repo.Where(n => n.客戶Id == 客戶Id).ToList();
+			return PartialView(contacts);
+		}
+
 		// GET: 客戶聯絡人
 		public ActionResult Index(string searchString, string key = "Id", bool isDesc = false)
         {
