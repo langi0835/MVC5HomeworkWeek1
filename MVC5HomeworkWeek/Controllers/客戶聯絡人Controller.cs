@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ClosedXML.Excel;
+using MVC5HomeworkWeek.ActionFilters;
 using MVC5HomeworkWeek.Models;
 
 namespace MVC5HomeworkWeek.Controllers
@@ -36,6 +37,21 @@ namespace MVC5HomeworkWeek.Controllers
 			
             return View(repo.OrderBy(contacts, key, isDesc).ToList());
         }
+
+		[HttpPost]
+		[GetCustomerContactList]
+		public ActionResult Index(IEnumerable<客戶聯絡人> contactList)
+		{
+			if (ModelState.IsValid)
+			{
+				repo.BulkUpdate(contactList);
+				repo.UnitOfWork.Commit();
+
+				return RedirectToAction("Index");
+			}
+
+			return View(ViewBag.CustomerContactList);
+		}
 
         // GET: 客戶聯絡人/Details/5
         public ActionResult Details(int? id)

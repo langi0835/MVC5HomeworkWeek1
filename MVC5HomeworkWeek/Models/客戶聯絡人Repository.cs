@@ -43,6 +43,19 @@ namespace MVC5HomeworkWeek.Models
 			entity.是否已刪除 = true;
 			Update(entity);
 		}
+
+		public void BulkUpdate(IEnumerable<客戶聯絡人> contacts)
+		{
+			foreach (var data in contacts)
+			{
+				var contact = Find(data.Id);
+				contact.職稱 = data.職稱;
+				contact.手機 = data.手機;
+				contact.電話 = data.電話;
+				Update(contact);
+			}
+
+		}
 	}
 
 	public  interface I客戶聯絡人Repository : IRepository<客戶聯絡人>

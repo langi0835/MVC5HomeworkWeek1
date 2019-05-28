@@ -17,57 +17,69 @@
 			@Html.ActionLink("Export", "Export")
 		</div>
 	</p>
-}
-<table class="table">
-	<tr>
-		<th>
-			@Html.DisplayNameFor(model => model.職稱)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.姓名)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.Email)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.手機)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.電話)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
-		</th>
-		<th></th>
-	</tr>
+	<input type="submit" value="批次更新" />
 
-	@foreach (var item in Model)
-	{
+	<table class="table">
 		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.職稱)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.姓名)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Email)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.手機)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.電話)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.客戶資料.客戶名稱)
-			</td>
-			<td>
-				@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-				@Html.ActionLink("Details", "Details", new { id = item.Id }) |
-				@Html.ActionLink("Delete", "Delete", new { id = item.Id })
-			</td>
+			<th>
+				@Html.DisplayNameFor(model => model.職稱)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.姓名)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Email)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.手機)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.電話)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.客戶資料.客戶名稱)
+			</th>
+			<th></th>
 		</tr>
-	}
 
-</table>
+		@{
+			var data = Model.ToArray();
+		}
+
+		@for (int i = 0; i < data.Length; i++)
+		{
+			<tr>
+				<td>
+					@Html.EditorFor(m => data[i].職稱)
+					<br />
+					@Html.ValidationMessageFor(m => data[i].職稱)
+				</td>
+				<td>
+					@Html.DisplayFor(m => data[i].姓名)
+				</td>
+				<td>
+					@Html.DisplayFor(m => data[i].Email)
+				</td>
+				<td>
+					@Html.EditorFor(m => data[i].手機)
+					<br />
+					@Html.ValidationMessageFor(m => data[i].手機)
+				</td>
+				<td>
+					@Html.EditorFor(m => data[i].電話)
+					<br />
+					@Html.ValidationMessageFor(m => data[i].電話)
+				</td>
+				<td>
+					@Html.DisplayFor(m => data[i].客戶資料.客戶名稱)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = data[i].Id }) |
+					@Html.ActionLink("Details", "Details", new { id = data[i].Id }) |
+					@Html.ActionLink("Delete", "Delete", new { id = data[i].Id })
+				</td>
+			</tr>
+		}
+
+	</table>
+}
